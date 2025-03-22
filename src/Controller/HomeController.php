@@ -52,7 +52,7 @@ class HomeController extends AbstractController
     public function brevo(MailerInterface $mailer): Response
     {
         // Configure API key authorization: api-key
-        $config = \Brevo\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', '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');
+        $config = \Brevo\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', $_ENB("BREVO_API_KEY"));
 
         $apiInstance = new \Brevo\Client\Api\TransactionalEmailsApi(
             // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
