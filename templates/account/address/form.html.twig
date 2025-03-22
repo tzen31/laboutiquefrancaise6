@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une adresse - laboutiquefrançaise{% endblock %}
+
+{% block content %}
+    <h1>Gérer mes adresses</h1>
+    <a href="{{ path('app_account_addresses') }}">Retour</a>
+    <br><br>
+    {{ form_start(addressForm) }}
+    <div class="row">
+        <div class="col-md-12">{{ form_row(addressForm.name) }}</div>
+        <div class="col-md-6">{{ form_row(addressForm.firstname) }}</div>
+        <div class="col-md-6">{{ form_row(addressForm.lastname) }}</div>
+        <div class="col-md-6">{{ form_row(addressForm.company) }}</div>
+        <div class="col-md-6">{{ form_row(addressForm.address) }}</div>
+        <div class="col-md-6">{{ form_row(addressForm.postal) }}</div>
+        <div class="col-md-6">{{ form_row(addressForm.city) }}</div>
+        <div class="col-md-6">{{ form_row(addressForm.country) }}</div>
+        <div class="col-md-6">{{ form_row(addressForm.phone) }}</div>
+    </div>
+    {{ form_end(addressForm) }}
+{% endblock %}

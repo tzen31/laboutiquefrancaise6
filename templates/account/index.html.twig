@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte - laboutiquefrançaise{% endblock %}
+
+{% block content %}
+    <h1>Mon compte</h1>
+
+     {# {% if is_granted('ROLE_ADMIN') %}
+            <small><a href="/admin">Vous êtes un administrateur, accéder au backoffice</a></small><br>
+        {% endif %}
+        Bienvenue {{ app.user.firstname }} dans votre compte <br>
+        C'est dans cet espace que vous allez pouvoir gérer toutes vos informations personnelles
+        <hr>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="account-item text-center">
+                    <img src="{{ asset('assets/img/cadenas.png') }}" alt="Modifier mon mot de passe"><br>
+                    <a href="{{ path('app_account_password') }}">Modifier mon mot de passe</a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="account-item text-center">
+                    <img src="{{ asset('assets/img/address-book.png') }}" alt="Gérer mes adresses"><br>
+                    <a href="{{ path('app_account_addresses') }}">Gérer mes adresses</a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="account-item text-center">
+                    <img src="{{ asset('assets/img/purchase.png') }}" alt="Mes commandes"><br>
+                    <a href="{{ path('app_account_order') }}">Mes commandes</a></div>
+            </div>
+        </div>   
+        <hr>
+       #}
+
+    <div class="row">
+        <div class="col-md-3">
+            {%  include 'account/_menu.html.twig' %}
+        </div>
+        <div class="col-md-9">
+                <h5>Mes dernières commandes</h5>
+                {% if orders|length == 0 %}
+                    <div class="alert alert-info">
+                        Vous n'avez passé aucune commande pour le moment.
+                    </div>
+                {% else %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">N°</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Statut</th>
+                        <th scope="col">Total T.T.C</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.createdAt|date('d/m/Y') }}</td>
+                            <td>{{ include('admin/state.html.twig', { field : { 'value' : order.state } } ) }}</td>
+                            <td>{{ order.totalWt|price }}</td>
+                            <td><a href="{{ path('app_account_order', { 'id_order' : order.id } ) }}">Voir</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+
+     </div> 
+       
+{% endblock %}
