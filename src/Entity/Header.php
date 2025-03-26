@@ -20,13 +20,13 @@ class Header
     private $content;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $btnTitle;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $btn_url;
+    private $buttonTitle;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $illustration;
+
+    #[ORM\Column(length: 255)]
+    private ?string $buttonLink = null;
 
     public function getId(): ?int
     {
@@ -57,26 +57,14 @@ class Header
         return $this;
     }
 
-    public function getBtnTitle(): ?string
+    public function getButtonTitle(): ?string
     {
-        return $this->btnTitle;
+        return $this->buttonTitle;
     }
 
-    public function setBtnTitle(string $btnTitle): self
+    public function setButtonTitle(string $buttonTitle): self
     {
-        $this->btnTitle = $btnTitle;
-
-        return $this;
-    }
-
-    public function getBtnUrl(): ?string
-    {
-        return $this->btn_url;
-    }
-
-    public function setBtnUrl(string $btn_url): self
-    {
-        $this->btn_url = $btn_url;
+        $this->buttonTitle = $buttonTitle;
 
         return $this;
     }
@@ -89,6 +77,18 @@ class Header
     public function setIllustration(string $illustration): self
     {
         $this->illustration = $illustration;
+
+        return $this;
+    }
+
+    public function getButtonLink(): ?string
+    {
+        return $this->buttonLink;
+    }
+
+    public function setButtonLink(string $buttonLink): static
+    {
+        $this->buttonLink = $buttonLink;
 
         return $this;
     }

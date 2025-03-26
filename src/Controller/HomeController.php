@@ -29,21 +29,21 @@ class HomeController extends AbstractController
     //public function index(RequestStack $session): Response
     public function index(): Response
     {
-        //MAILJET
-        // $mail = new Mail();
-
-        // $vars = [
-        //     'firstname' => "Thierry",
-        // ];
-
-        // $content = 'Bonjour Thierry<br>J\'espère que vous allez bien.';
+        //MAILJET - Envoi de mail automatique en utilisant un N° de template
+        $mail = new Mail();
+        $vars = [
+            'firstname' => "Thierry",
+        ];
+        $content = 'Bonjour Thierry<br>J\'espère que vous allez bien.';
         // $mail->send('tzen@hotmail.fr','Thierry ZENNARO', 'Mon premier mail Mailjet sur Symfony 6', 'welcome.html.twig', $vars);
 
-        $products = $this->entityManager->getRepository(Product::class)->findByIsBest(1);
+        //$products = $this->entityManager->getRepository(Product::class)->findByIsBest(1);
+        $productsIsBest = $this->entityManager->getRepository(Product::class)->findByIsBest(1);
         $headers = $this->entityManager->getRepository(Header::class)->findAll();
 
         return $this->render('home/index.html.twig', [
-            'products' => $products,
+            //'products' => $products,
+            'productsInHomePage' => $productsIsBest,
             'headers' => $headers
         ]);
     }

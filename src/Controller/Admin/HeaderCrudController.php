@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 
 class HeaderCrudController extends AbstractCrudController
 {
@@ -17,16 +18,25 @@ class HeaderCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        $required = true;
+
+        if($pageName == 'edit') {
+            $required = false;
+        }
+
         return [
             TextField::new('title','Titre du header'),
             TextareaField::new('content','Contenu de notre header'),
-            TextField::new('btn_title', 'Titre de notre bouton'),
-            TextField::new('btn_url', 'Url de destination de notre bouton'),
+            TextField::new('button_title', 'Titre du bouton'),
+            TextField::new('button_link', 'URL du bouton'),
             ImageField::new('illustration')
-                ->setBasePath('uploads/')
-                ->setUploadDir('public/uploads/')
-                ->setUploadedFileNamePattern('[randomhash].random[extension]')
-                ->setRequired(false),
+                ->setLabel('Image de fond du header')
+                ->setHelp('Image de fond du header en JPG')
+                //->setUploadedFileNamePattern('[randomhash].random[extension]')
+                ->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash]-[extension]')
+                ->setBasePath('/uploads')
+                ->setUploadDir('/public/uploads')
+                ->setRequired($required),
         ];
     }
 }

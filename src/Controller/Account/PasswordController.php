@@ -3,6 +3,7 @@
 namespace App\Controller\Account;
 
 use App\Form\ChangePasswordType;
+use App\Form\ForgotPasswordFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,8 +24,31 @@ class PasswordController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    #[Route('/mot-de-passe_oublie', name: 'app_password')]
+    public function index(Request $request): Response
+    {
+        //1. Formulaire
+        $form = $this->createForm(ForgotPasswordFormType::class);
+        $form->handleRequest($request);
+
+        //2. Traitement formulaire
+        if ($form->isSubmitted() && $form->isValid()){
+            //3. Si l'email renseigné par l'utilisateur est en base de données
+    
+            //4. Si c'est le cas, on reset le password et on envoie par email le nouveau mot de passe
+    
+            //5. Si aucun email trouvé, on push une notification : Email introuvable
+        }
+
+        
+    
+        return $this->render('password/index.html.twig', [
+            'forgotPasswordForm' => $form->createView()
+        ]);
+    }
+
     #[Route('/compte/modifier-mon-mot-de-passe', name: 'app_account_password')]
-    public function index(Request $request, UserPasswordHasherInterface $encoder): Response
+    public function modifier(Request $request, UserPasswordHasherInterface $encoder): Response
     {
         $notification = 'valeur par defaut';
 

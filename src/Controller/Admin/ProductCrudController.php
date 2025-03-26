@@ -38,6 +38,8 @@ class ProductCrudController extends AbstractCrudController
 
         return [
             TextField::new('name')->setLabel('Nom')->setHelp('Nom de votre produit'),
+            BooleanField::new('isBest')->setLabel('Produit à la une')->setHelp('Afficher un produit sur la HomePage'),
+            
             SlugField::new('slug')
                      ->setTargetFieldName('name')->setLabel('URL')->setHelp('URLde votre produit'),
             TextEditorField::new('description')->setHelp('Description de votre produit'),
@@ -52,7 +54,7 @@ class ProductCrudController extends AbstractCrudController
                       ->setLabel('Prix')
                       ->setCurrency('EUR'), 
             ChoiceField::new('tva')
-                      ->setLabel('Taucx de TVA')
+                      ->setLabel('Taux de TVA')
                       ->setChoices([
                         '5.5%' => '5.5',
                         '10%' => '10',
@@ -60,7 +62,7 @@ class ProductCrudController extends AbstractCrudController
                       ]),                
             AssociationField::new('category','Catégorie associé'),       
             TextField::new('subtitle')->setLabel('Sous-titre'),            
-            BooleanField::new('isBest')->setLabel('Top vente')
+            //BooleanField::new('isBest')->setLabel('Top vente')
             
         ];
     }

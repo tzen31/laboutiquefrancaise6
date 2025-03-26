@@ -2,7 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Classe\Mail;
 use App\Entity\Order;
+use App\Classe\State;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -22,6 +24,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 //use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;  //Symfony 5
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator; //Symfony 6
+use Symfony\Component\HttpFoundation\Request;
 
 class OrderCrudController extends AbstractCrudController
 {
@@ -57,11 +60,46 @@ class OrderCrudController extends AbstractCrudController
             //->add('index', 'detail');
     }
 
-    public function show(AdminContext $context) {
+    /*
+    * Fonction permettant le changement de statut de commande
+    */
+    public function changeState($order, $state) {
+        //dd(State::STATE[$state]);
+
+        //1. Modification du statut de la commande
+        $order->setState($state);
+        $this->entityManager->flush();
+
+        //2. Affichage du Flash Message pour informer l'administrateur
+        $this->addFlash('success','Statut de la commande correctement mis à jour');
+
+        //3. Informer l'utilisateur du statut de sa commande
+        $to = $order->getUser()->getEmail();
+        $mail = new Mail();
+        $vars = [
+            'firstname' => $order->getUser()->getFirstName(),
+            'id_order' => $order->getId()
+        ];
+        $content = 'Bonjour Thierry<br>J\'espère que vous allez bien.';
+        $mail->send($to, $order->getUser()->getFirstName(). ' '.$order->getUser()->getLastName(), State::STATE[$state]['email_subject'], State::STATE[$state]['email_template'], $vars);
+
+    }
+
+    public function show(AdminContext $context, AdminUrlGenerator $adminUrlGenerator, Request $request) {
         $order = $context->getEntity()->getInstance();
+        
+        // Récupérer l'URL de notre action "show"
+        $url = $adminUrlGenerator->setController(self::class)->setAction('show')->setEntityId($order->getId())->generateUrl();
+        //dd($url);
+
+        // Traitement des changement de statut
+        if ($request->get('state')) {
+            $this->changeState($order, $request->get('state'));
+        }
 
         return $this->render('admin/order.html.twig', [
-            'order' => $order
+            'order' => $order,
+            'current_url' => $url
         ]);
     }
 
